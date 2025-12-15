@@ -1,6 +1,6 @@
 ## 📊 Customer Churn Dashboard
 
-![Customer Churn Dashboard](https://github.com/Jyoti7890/Customer_Churn_Project/blob/main/dashboard.png)
+![Customer Churn Dashboard](https://github.com/Jyoti7890/Customer_Churn_Project/blob/main/Customer_Churn_dashboard.png)
 
 
 # Customer_Churn_Project
