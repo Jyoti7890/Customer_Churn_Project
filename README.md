@@ -2,7 +2,7 @@
 
 ![Customer Churn Dashboard](https://github.com/Jyoti7890/Customer_Churn_Project/blob/main/Customer_Churn_dashboard.png)
 
-## Project Overview
+##  Project Overview
 
 This is an **end-to-end data analytics project** that combines **Exploratory Data Analysis (EDA)** and **Power BI dashboarding** to analyze customer churn and extract actionable business insights.
 This project focuses on **Customer Churn Analysis** using **Bank Customer Data**. The goal is to identify churn patterns, analyze customer behavior, and derive insights that help businesses reduce customer attrition.
@@ -11,7 +11,7 @@ An interactive **Power BI Dashboard** has been built using cleaned and transform
 
 ---
 
-##  Objectives
+## Objectives
 
 * Analyze customer churn behavior
 * Identify key factors influencing churn
@@ -20,7 +20,7 @@ An interactive **Power BI Dashboard** has been built using cleaned and transform
 
 ---
 
-## Tools & Technologies Used
+##  Tools & Technologies Used
 
 * **Power BI** – Dashboard creation & visualization
 * **Power Query** – Data cleaning and transformation
@@ -29,19 +29,22 @@ An interactive **Power BI Dashboard** has been built using cleaned and transform
 
 ---
 
-##  Dataset Description
+## Dataset Description
 
-The dataset contains bank customer information including:
+The dataset contains bank customer information with the following columns:
 
-* Gender
-* Age
-* Country
-* Credit Score
-* Account Balance
-* Products Used
-* Credit Card Status
-* Activity Status
-* Churn Status
+* customer_id
+* credit_score
+* country
+* gender
+* age
+* tenure
+* balance
+* products_number
+* credit_card
+* active_member
+* estimated_salary
+* churn
 
 ---
 
@@ -101,7 +104,7 @@ The Power BI dashboard includes interactive and insight-driven visuals:
 
 ---
 
-## 📊 Key Insights
+##  Key Insights
 
 * Higher churn observed in middle-aged customers
 * Customers with lower credit scores show higher churn rates
@@ -124,15 +127,17 @@ The Power BI dashboard includes interactive and insight-driven visuals:
 ```
 Customer-Churn-Analysis/
 │
-├── Customer Churn Dashboard.pbix   # Power BI dashboard file
-├── Customer_churn_dashboard.pdf   # Dashboard export (PDF)
-├── bank_churn.csv                  # Dataset used for analysis
-├── customer_churn_eda.ipynb        # EDA performed in Google Colab
-├── README.md                       # Project documentation
-
+├── Customer Churn Dashboard.png        # Dashboard screenshot (PNG)
+├── Customer_churn_dashboard.pbix       # Power BI dashboard file
+├── Customer_Churn_dashboard.pdf        # Dashboard export (PDF)
+├── bank_churn.csv                      # Dataset used for analysis
+├── customer_churn_eda.ipynb            # EDA notebook (Google Colab)
+└── README.md                            # Project documentation
 ```
 
-## Conclusion
+---
+
+##  Conclusion
 This project demonstrates how **Power BI**, **Power Query**, and **EDA** can be effectively combined to analyze customer churn and extract meaningful business insights.
 
 ---
@@ -142,8 +147,8 @@ This project demonstrates how **Power BI**, **Power Query**, and **EDA** can be 
 Data Analytics | Power BI | Python
 
 ---
+
  If you like this project, feel free to give it a star!
 
 ```
-
 
