@@ -4,6 +4,7 @@ import joblib
 import os
 from io import StringIO
 from importlib.metadata import PackageNotFoundError, version
+import warnings
 
 # Go one level up from utils folder
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -121,7 +122,9 @@ def load_model():
             return "not installed"
 
     try:
-        model = joblib.load(model_path)
+        with warnings.catch_warnings(record=True) as caught_warnings:
+            warnings.simplefilter("always")
+            model = joblib.load(model_path)
     except ModuleNotFoundError as e:
         missing_pkg = e.name or "unknown module"
         st.error(
@@ -150,6 +153,23 @@ def load_model():
     except Exception as e:
         st.error(f"Unexpected error while loading model: {e}")
         return None
+
+    version_warnings = [
+        w for w in caught_warnings if "InconsistentVersionWarning" in w.category.__name__
+    ]
+    if version_warnings:
+        st.warning(
+            "Model was trained with a different scikit-learn version than the "
+            "deployment environment. Predictions may be unreliable. Retrain the "
+            "model in the same version used on Streamlit Cloud."
+        )
+        st.code(
+            "Detected package versions:\n"
+            f"- scikit-learn=={_pkg_version('scikit-learn')}\n"
+            f"- xgboost=={_pkg_version('xgboost')}\n"
+            f"- joblib=={_pkg_version('joblib')}",
+            language="text",
+        )
 
     if not hasattr(model, "predict_proba"):
         st.warning(
