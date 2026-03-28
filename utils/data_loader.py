@@ -3,6 +3,7 @@ import pandas as pd
 import joblib
 import os
 from io import StringIO
+from importlib.metadata import PackageNotFoundError, version
 
 # Go one level up from utils folder
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -99,11 +100,61 @@ def load_data():
 
 @st.cache_resource
 def load_model():
-    model_path = os.path.join(BASE_DIR, 'models', 'churn_prediction_model.pkl')
-    
+    model_candidates = [
+        os.path.join(BASE_DIR, "models", "churn_prediction_model.pkl"),
+        os.path.join(BASE_DIR, "models", "churn_prediction_model.joblib"),
+    ]
+    model_path = next((path for path in model_candidates if os.path.exists(path)), None)
+
+    if model_path is None:
+        st.error(
+            "Error: model file not found. Expected one of:\n"
+            f"- {model_candidates[0]}\n"
+            f"- {model_candidates[1]}"
+        )
+        return None
+
+    def _pkg_version(pkg_name):
+        try:
+            return version(pkg_name)
+        except PackageNotFoundError:
+            return "not installed"
+
     try:
         model = joblib.load(model_path)
-        return model
-    except FileNotFoundError:
-        st.error(f"Error: {model_path} not found.")
+    except ModuleNotFoundError as e:
+        missing_pkg = e.name or "unknown module"
+        st.error(
+            f"Model loading failed because `{missing_pkg}` is missing in the "
+            "deployment environment."
+        )
+        st.info(
+            "Add the missing package to requirements.txt and redeploy. "
+            "For this project, `xgboost` is required because the model uses "
+            "`XGBClassifier`."
+        )
         return None
+    except (AttributeError, ValueError, TypeError) as e:
+        st.error(
+            "Model loading failed due to a training/deployment version mismatch."
+        )
+        st.code(
+            "Installed package versions:\n"
+            f"- scikit-learn=={_pkg_version('scikit-learn')}\n"
+            f"- joblib=={_pkg_version('joblib')}\n"
+            f"- xgboost=={_pkg_version('xgboost')}",
+            language="text",
+        )
+        st.caption(f"Details: {e}")
+        return None
+    except Exception as e:
+        st.error(f"Unexpected error while loading model: {e}")
+        return None
+
+    if not hasattr(model, "predict_proba"):
+        st.warning(
+            "Loaded model does not expose `predict_proba()`. "
+            "Prediction probabilities may not be available."
+        )
+
+    return model
